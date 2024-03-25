@@ -43,6 +43,8 @@ dependencies:
   dio: ^5.4.1
   firebase_core: ^2.27.1
   cloud_firestore: ^4.15.9
+  firebase_storage: ^11.6.10
+  
 
 dev_dependencies:
   flutter_test:

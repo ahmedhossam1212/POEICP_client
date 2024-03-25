@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poeicp_client/presntation/manager/cubit/auth_cubit.dart';
-import 'package:poeicp_client/presntation/view/screens/food_report.dart';
+import 'package:poeicp_client/presntation/view/screens/splash.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: FoodReport(),
+        home: SplashScreen(),
       ),
     );
   }

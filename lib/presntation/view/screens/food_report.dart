@@ -8,6 +8,7 @@ import 'package:poeicp_client/core/utils/style_manager.dart';
 import 'package:poeicp_client/presntation/manager/cubit/reports_cubit.dart';
 import 'package:poeicp_client/presntation/manager/state/reports_state.dart';
 import 'package:poeicp_client/presntation/view/widgets/form_field.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:poeicp_client/presntation/view/widgets/main_button.dart';
 
 class FoodReport extends StatefulWidget {
@@ -41,6 +42,15 @@ class _FoodReportState extends State<FoodReport> {
         image = File(pickedImage.path);
       });
     }
+  }
+
+  uploadImage() async {
+    Reference reference =
+        FirebaseStorage.instance.ref().child('pets_pic${DateTime.now()}/');
+    UploadTask uploadTask = reference.putFile(image!);
+    TaskSnapshot snapshot = await uploadTask;
+    imageUrl = await snapshot.ref.getDownloadURL();
+    debugPrint("##### $imageUrl");
   }
 
   @override
@@ -98,7 +108,11 @@ class _FoodReportState extends State<FoodReport> {
                                   ),
                                   defualtFormField(context,
                                       controller: addressController,
-                                      validate: () {},
+                                      validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "الرجاء ادخال العنون";
+                                    }
+                                  },
                                       hint: "عنوان المنفذ",
                                       type: TextInputType.text,
                                       width: double.infinity),
@@ -107,7 +121,11 @@ class _FoodReportState extends State<FoodReport> {
                                   ),
                                   defualtFormField(context,
                                       controller: phoneController,
-                                      validate: () {},
+                                      validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "الرجاء ادخال الهاتف";
+                                    }
+                                  },
                                       hint: " رقم هاتف المنفذ",
                                       type: TextInputType.number,
                                       width: double.infinity),
@@ -116,7 +134,11 @@ class _FoodReportState extends State<FoodReport> {
                                   ),
                                   defualtFormField(context,
                                       controller: emailController,
-                                      validate: () {},
+                                      validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "الرجاء ادخال البريد الالكتروني";
+                                    }
+                                  },
                                       hint: "البريد الالكتروني للمنفذ",
                                       type: TextInputType.emailAddress,
                                       width: double.infinity),
@@ -125,7 +147,11 @@ class _FoodReportState extends State<FoodReport> {
                                   ),
                                   defualtFormField(context,
                                       controller: typeController,
-                                      validate: () {},
+                                      validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "الرجاء ادخال نوع السلعة";
+                                    }
+                                  },
                                       hint: "نوع السلعة المباعة",
                                       type: TextInputType.text,
                                       width: double.infinity),
@@ -134,7 +160,11 @@ class _FoodReportState extends State<FoodReport> {
                                   ),
                                   defualtFormField(context,
                                       controller: priceController,
-                                      validate: () {},
+                                      validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "الرجاء ادخال سعر السلعة";
+                                    }
+                                  },
                                       hint: "سعر السلعة المباعة",
                                       type: TextInputType.number,
                                       width: double.infinity),
@@ -143,7 +173,11 @@ class _FoodReportState extends State<FoodReport> {
                                   ),
                                   defualtFormField(context,
                                       controller: payedController,
-                                      validate: () {},
+                                      validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "الرجاء ادخال المدفوع";
+                                    }
+                                  },
                                       hint: "المدفوع",
                                       type: TextInputType.number,
                                       width: double.infinity),
@@ -152,7 +186,11 @@ class _FoodReportState extends State<FoodReport> {
                                   ),
                                   defualtFormField(context,
                                       controller: noteController,
-                                      validate: () {},
+                                      validate: (String value) {
+                                    if (value.isEmpty) {
+                                      return "الرجاء ادخال الملاحظة";
+                                    }
+                                  },
                                       hint: "ملاحظة",
                                       type: TextInputType.text,
                                       width: double.infinity),
@@ -192,17 +230,24 @@ class _FoodReportState extends State<FoodReport> {
                                   SizedBox(
                                     height: context.height * 0.035,
                                   ),
-                                  mainButton(context, onpressd: () {
-                                    cubit.foodreport(
-                                        phone: phoneController.text,
-                                        postImage: imageUrl!,
-                                        email: emailController.text,
-                                        note: noteController.text,
-                                        payed: payedController.text,
-                                        price: priceController.text,
-                                        productType: typeController.text,
-                                        shopAddress: addressController.text,
-                                        shopName: nameController.text);
+                                  mainButton(context, onpressd: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      if (imageUrl == null) {
+                                        await uploadImage();
+                                      }
+                                      if (imageUrl != null) {
+                                        cubit.foodReport(
+                                            phone: phoneController.text,
+                                            postImage: imageUrl!,
+                                            email: emailController.text,
+                                            note: noteController.text,
+                                            payed: payedController.text,
+                                            price: priceController.text,
+                                            productType: typeController.text,
+                                            shopAddress: addressController.text,
+                                            shopName: nameController.text);
+                                      }
+                                    }
                                   }, background: AppColors.white, text: "تسجيل")
                                 ],
                               ),
