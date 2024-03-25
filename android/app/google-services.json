@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "310294113265",
+    "project_id": "poeicpclient4",
+    "storage_bucket": "poeicpclient4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310294113265:android:5e89fc9e9481b5465cf250",
+        "android_client_info": {
+          "package_name": "com.example.poeicp_client"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4R67iHqGE9TycWLRoC87LvgZubkPrEqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
