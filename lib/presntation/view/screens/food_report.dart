@@ -24,7 +24,7 @@ class _FoodReportState extends State<FoodReport> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController officialPriceController = TextEditingController();
+  final TextEditingController payedController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
@@ -50,6 +50,7 @@ class _FoodReportState extends State<FoodReport> {
       child: BlocConsumer<ReportsCubit, ReportsStates>(
         listener: (context, state) {},
         builder: (context, state) {
+          var cubit = ReportsCubit.get(context);
           return Scaffold(
             appBar: AppBar(),
             body: Directionality(
@@ -141,7 +142,7 @@ class _FoodReportState extends State<FoodReport> {
                                     height: context.height * 0.02,
                                   ),
                                   defualtFormField(context,
-                                      controller: officialPriceController,
+                                      controller: payedController,
                                       validate: () {},
                                       hint: "المدفوع",
                                       type: TextInputType.number,
@@ -181,7 +182,7 @@ class _FoodReportState extends State<FoodReport> {
                                                 color: AppColors.black,
                                               ),
                                               Text(
-                                                "رفع صورة الفاتورة",
+                                                "رفع صورة الفاتورة لتتمكن من اتمام العمليه",
                                                 style: getBoldStyle(
                                                     color: AppColors.black),
                                               )
@@ -191,10 +192,18 @@ class _FoodReportState extends State<FoodReport> {
                                   SizedBox(
                                     height: context.height * 0.035,
                                   ),
-                                  mainButton(context,
-                                      onpressd: () {},
-                                      background: AppColors.white,
-                                      text: "تسجيل")
+                                  mainButton(context, onpressd: () {
+                                    cubit.foodreport(
+                                        phone: phoneController.text,
+                                        postImage: imageUrl!,
+                                        email: emailController.text,
+                                        note: noteController.text,
+                                        payed: payedController.text,
+                                        price: priceController.text,
+                                        productType: typeController.text,
+                                        shopAddress: addressController.text,
+                                        shopName: nameController.text);
+                                  }, background: AppColors.white, text: "تسجيل")
                                 ],
                               ),
                             ),
